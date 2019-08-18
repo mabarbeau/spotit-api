@@ -12,5 +12,5 @@
 */
 
 Route::get('/', function () {
-    return 'Laravel' . App::version();
+    return 'Laravel ' . App::version();
 });

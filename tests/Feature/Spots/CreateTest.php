@@ -9,12 +9,11 @@ class CreateTest extends TestCase
 {
     use RefreshDatabase;
     /**
-     * Create a new spot with api
+     * Can create a new spot
      *
      * @dataProvider UserProvider
      *
      * @param \App\User $user
-     *
      * @return void
      */
     public function testCan(\App\User $user)

@@ -3,13 +3,13 @@
 namespace Tests\Feature\Spots;
 
 use Illuminate\Foundation\Testing\RefreshDatabase;
-use Illuminate\Foundation\Testing\WithFaker;
 use Tests\TestCase;
 
 class IndexTest extends TestCase
 {
+    use RefreshDatabase;
     /**
-     * A basic feature test example.
+     * Can list spots
      *
      * @return void
      */

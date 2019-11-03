@@ -3,7 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Spot;
-use App\Backup;
+use App\Snapshot;
 use App\Http\Requests\StoreSpot;
 
 class SpotController extends Controller
@@ -43,16 +43,18 @@ class SpotController extends Controller
     /**
      * Update the specified spot in storage.
      *
-     * @param  Illuminate\Http\Request  $request
+     * @param  App\Http\Requests\StoreSpot  $request
      * @param  string $slug
      * @return App\Spot
      */
     public function update(StoreSpot $request, $slug)
     {
+        $spot = Spot::where('slug', $slug)->firstOrFail();
+
+        Snapshot::create($spot);
+
         return [
-            'updated' =>  Spot::where('slug', $slug)
-                ->firstOrFail()
-                ->update($request->all()) 
+            'updated' => $spot->update($request->all()) 
         ];
     }
     
@@ -66,10 +68,8 @@ class SpotController extends Controller
     {
         $spot = Spot::where('slug', $slug)->firstOrFail();
 
-        // Backup::create($spot->toArray());
-        //     'id' => spot->id,
-        //     'class' => 'spots',
-        //     'data' => json_encode($spot),
+        Snapshot::create($spot);
+            
         return [
             'deleted' =>  $spot->delete()
         ];

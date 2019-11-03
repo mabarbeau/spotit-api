@@ -7,3 +7,6 @@ Route::resource('spots', 'SpotController')->except([
     'create', 'edit'
 ]);
 
+
+Route::get('Snapshots/{alias}/{key}', 'SnapshotController@index');
+Route::post('Snapshots', 'SnapshotController@restore');

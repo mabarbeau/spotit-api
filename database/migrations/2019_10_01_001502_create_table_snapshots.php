@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateTableBackups extends Migration
+class CreateTableSnapshots extends Migration
 {
     /**
      * Run the migrations.
@@ -13,11 +13,12 @@ class CreateTableBackups extends Migration
      */
     public function up()
     {
-        Schema::create('backups', function (Blueprint $table) {
+        Schema::create('snapshots', function (Blueprint $table) {
             $table->increments('id');
-            $table->string('table', 20);
-            $table->jsonb('data');
-            $table->timestamp('deleted_at');
+            $table->integer('key');
+            $table->string('class');
+            $table->json('json');
+            $table->timestamp('created_at');
         });
     }
     /**
@@ -27,6 +28,6 @@ class CreateTableBackups extends Migration
      */
     public function down()
     {
-        Schema::drop('backups');
+        Schema::drop('snapshots');
     }
 }

@@ -11,6 +11,6 @@ trait SpotProvider
      **/
     public function SpotProvider()
     {
-        return [ "Spot" => [ factory(\App\Spot::class)->make() ] ];
+        return [ "Spot" => [ factory(\App\Spot::class)->create() ] ];
     }
 }

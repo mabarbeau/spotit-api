@@ -15,8 +15,9 @@ class CreateTableSnapshots extends Migration
     {
         Schema::create('snapshots', function (Blueprint $table) {
             $table->increments('id');
-            $table->integer('key');
-            $table->string('class');
+            $table->integer('snapshotable_id');
+            $table->string('snapshotable_type');
+            $table->string('event');
             $table->json('json');
             $table->timestamp('created_at');
         });

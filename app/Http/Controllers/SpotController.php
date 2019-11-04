@@ -3,7 +3,6 @@
 namespace App\Http\Controllers;
 
 use App\Spot;
-use App\Snapshot;
 use App\Http\Requests\StoreSpot;
 
 class SpotController extends Controller
@@ -51,8 +50,6 @@ class SpotController extends Controller
     {
         $spot = Spot::where('slug', $slug)->firstOrFail();
 
-        Snapshot::create($spot);
-
         return [
             'updated' => $spot->update($request->all()) 
         ];
@@ -68,8 +65,6 @@ class SpotController extends Controller
     {
         $spot = Spot::where('slug', $slug)->firstOrFail();
 
-        Snapshot::create($spot);
-            
         return [
             'deleted' =>  $spot->delete()
         ];

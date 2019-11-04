@@ -11,6 +11,6 @@ trait UserProvider
      **/
     public function UserProvider()
     {
-        return [ "User" => [ factory(\App\User::class)->make() ] ];
+        return [ "User" => [ factory(\App\User::class)->create() ] ];
     }
 }

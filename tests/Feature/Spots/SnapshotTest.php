@@ -14,7 +14,6 @@ class SnapshotTest extends TestCase
     /**
      * Can delete a spot
      * 
-     * @param Spot
      * @return void
      */
     public function testCreateAndUpdateMakeSnapshots()
@@ -22,11 +21,13 @@ class SnapshotTest extends TestCase
         // Creating a spot takes a snapshot
         $spot =factory(Spot::class)->create();
 
+        $this->assertEquals($spot->snapshots()->where('event', 'created')->count(), 1);
+        
         $newData = factory(Spot::class)->make()->toArray();
-
+        
         // Updating a spot takes a snapshot
         $spot->update($newData);
-
-        $this->assertEquals(2, $spot->snapshots()->count());
+        
+        $this->assertEquals($spot->snapshots()->where('event', 'updated')->count(), 1);
     }
 }

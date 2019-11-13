@@ -11,6 +11,7 @@ class SpotsTableSeeder extends Seeder
      */
     public function run()
     {            
-        factory(App\Spot::class, 50)->create();
+        factory(App\Spot::class, 49)->create();
+        factory(App\Spot::class, 1)->create(['slug' => 'postman']);
     }
 }

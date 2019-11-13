@@ -4,13 +4,13 @@ namespace App;
 
 use Illuminate\Database\Eloquent\Model;
 
-class Spot extends Model
+class Sport extends Model
 {
     protected $hidden = ['id'];
     protected $guarded = [
         'id'
     ];
-    
+
     /**
      * Get the route key for the model.
      *
@@ -18,22 +18,15 @@ class Spot extends Model
      */
     public function getRouteKeyName()
     {
-        return 'slug';
+        return 'name';
     }
 
     /**
-     * Snapshots of spot
-     */
-    public function snapshots()
-    {
-        return $this->morphMany('App\Snapshot', 'snapshotable');
-    }
-
-    /**
-     * Sports available at spot
+     * Spots for sport
      */
     public function spots()
     {
-        return $this->belongsToMany('App\Sport');
+        return $this->belongsToMany('App\Spot');
     }
+
 }

@@ -2,13 +2,17 @@
 
 namespace App;
 
-use Illuminate\Notifications\Notifiable;
-use Illuminate\Contracts\Auth\MustVerifyEmail;
+use Illuminate\Support\Str;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 
 class User extends Authenticatable
 {
-    use Notifiable;
+    /**
+     * Turn off auto incrementing primary key
+     *
+     * @var boolean
+     */
+    public $incrementing = false;
 
     /**
      * The attributes that are mass assignable.
@@ -16,29 +20,26 @@ class User extends Authenticatable
      * @var array
      */
     protected $fillable = [
-        'name', 'email', 'password',
+        'name', 'email',
     ];
 
-    /**
-     * The attributes that should be hidden for arrays.
-     *
-     * @var array
-     */
-    protected $hidden = [
-        'password', 'remember_token',
-    ];
+    protected static function boot()
+    {
+        parent::boot();
 
-    /**
-     * The attributes that should be cast to native types.
-     *
-     * @var array
-     */
-    protected $casts = [
-        'email_verified_at' => 'datetime',
-    ];
+        static::creating(function ($post) {
+            $post->{$post->getKeyName()} = (string) Str::uuid();
+        });
+    }
+
+    public function getKeyType()
+    {
+        return 'string';
+    }
 
     public function spots()
     {
         return $this->hasMany('App\Spot', 'creator_id');
     }
+    
 }

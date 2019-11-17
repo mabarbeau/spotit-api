@@ -1,6 +1,7 @@
 <?php
 
 use App\Spot;
+use App\User;
 use Illuminate\Database\Seeder;
 
 class SpotsTableSeeder extends Seeder
@@ -14,6 +15,10 @@ class SpotsTableSeeder extends Seeder
     {
         $isPostmanSpotCreated = Spot::where(['slug' => 'postman'])->exists();
 
-        if (!$isPostmanSpotCreated) factory(Spot::class, 1)->create(['creator_id' => 1, 'slug' => 'postman']);
+        if (!$isPostmanSpotCreated) {
+            $user = User::firstOrFail();
+            
+            factory(Spot::class, 1)->create(['creator_id' => $user->id, 'slug' => 'postman']);
+        }
     }
 }

@@ -50,6 +50,6 @@ class Spot extends Model
      */
     public function creator()
     {
-        return $this->hasOne('App\User');
+        return $this->belongsTo('App\User', 'creator_id');
     }
 }

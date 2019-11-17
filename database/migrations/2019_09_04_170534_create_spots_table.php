@@ -23,6 +23,8 @@ class CreateSpotsTable extends Migration
             $table->string('region', 50)->nullable();
             $table->string('postcode', 20);
             $table->string('country', 2);
+            $table->unsignedBigInteger('creator_id')->unsigned();
+            $table->foreign('creator_id')->references('id')->on('users');
             $table->timestamps();
         });
     }

@@ -39,6 +39,6 @@ class User extends Authenticatable
 
     public function spots()
     {
-        return $this->hasMany('App\Spot');
+        return $this->hasMany('App\Spot', 'creator_id');
     }
 }

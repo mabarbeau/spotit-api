@@ -15,8 +15,7 @@ class SpotObserver
      */
     public function created(Spot $spot)
     {
-        \Log::info('created');
-        \Log::info(Snapshot::create('created', $spot));
+        Snapshot::create('created', $spot);
     }
 
     /**
@@ -27,7 +26,6 @@ class SpotObserver
      */
     public function updated(Spot $spot)
     {
-        \Log::info('updated');
-        \Log::info(Snapshot::create('updated', $spot));
+        Snapshot::create('updated', $spot);
     }
 }

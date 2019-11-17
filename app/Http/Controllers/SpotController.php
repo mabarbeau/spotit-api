@@ -21,7 +21,7 @@ class SpotController extends Controller
      * Store a newly created spot in storage.
      *
      * @param  App\Http\Requests\StoreSpot  $request
-     * @return App\Spot
+     * @return \Illuminate\Http\Response
      */
     protected function store(StoreSpot $request)
     {
@@ -32,7 +32,7 @@ class SpotController extends Controller
      * Display the specified spot.
      *
      * @param  string $slug
-     * @return App\Spot
+     * @return \Illuminate\Http\Response
      */
     protected function show($slug)
     {
@@ -44,7 +44,7 @@ class SpotController extends Controller
      *
      * @param  App\Http\Requests\StoreSpot  $request
      * @param  string $slug
-     * @return App\Spot
+     * @return \Illuminate\Http\Response
      */
     public function update(StoreSpot $request, $slug)
     {

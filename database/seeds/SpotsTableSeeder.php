@@ -14,8 +14,6 @@ class SpotsTableSeeder extends Seeder
     {
         $isPostmanSpotCreated = Spot::where(['slug' => 'postman'])->exists();
 
-        factory(Spot::class, $isPostmanSpotCreated ? 50 : 49)->create(['creator_id'=> 1]);
-
         if (!$isPostmanSpotCreated) factory(Spot::class, 1)->create(['creator_id' => 1, 'slug' => 'postman']);
     }
 }

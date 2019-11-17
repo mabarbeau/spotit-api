@@ -11,6 +11,8 @@ trait SpotProvider
      **/
     public function SpotProvider()
     {
-        return [ "Spot" => [ factory(\App\Spot::class)->create() ] ];
+        $user = factory(\App\User::class)->create();
+
+        return [ "Spot" => [ factory(\App\Spot::class)->create(['creator_id' => $user->id]) ] ];
     }
 }

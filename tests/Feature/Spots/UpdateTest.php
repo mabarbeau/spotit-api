@@ -11,14 +11,13 @@ class UpdateTest extends TestCase
     /**
      * A basic feature test example.
      *
-     * @dataProvider UserProvider
-     *
-     * @param \App\User $User
      * @return void
      */
-    public function testCan(\App\User $user)
+    public function testCan()
     {
-        $spot = factory(\App\Spot::class)->create();
+        $user = factory(\App\User::class)->create();
+
+        $spot = factory(\App\Spot::class)->create(['creator_id' => $user->id]);
         
         $response = $this->actingAs($user)->put(
             "/spots/" . $spot->slug,

@@ -10,14 +10,13 @@ class CreateTest extends TestCase
     use RefreshDatabase;
     /**
      * Can create a new spot
-     *
-     * @dataProvider UserProvider
-     *
-     * @param \App\User $user
+     * 
      * @return void
      */
-    public function testCan(\App\User $user)
+    public function testCan()
     {
+        $user = factory(\App\User::class)->create();
+
         $response = $this->actingAs($user)->post(
             "/spots",
             factory(\App\Spot::class)->make()->toArray()

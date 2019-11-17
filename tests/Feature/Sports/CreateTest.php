@@ -11,13 +11,12 @@ class CreateTest extends TestCase
     /**
      * Can create a new sport
      *
-     * @dataProvider UserProvider
-     *
-     * @param \App\User $user
      * @return void
      */
-    public function testCan(\App\User $user)
+    public function testCan()
     {
+        $user = factory(\App\User::class)->create();
+
         $response = $this->actingAs($user)->post(
             "/sports",
             factory(\App\Sport::class)->make()->toArray()

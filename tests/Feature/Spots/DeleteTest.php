@@ -10,17 +10,16 @@ class DeleteTest extends TestCase
     use RefreshDatabase;
     /**
      * Can delete a spot
-     *
-     * @dataProvider UserProvider
-     *
-     * @param \App\User $User
+     * 
      * @return void
      */
-    public function testCan(\App\User $user)
+    public function testCan()
     {
-        $spot = factory(\App\Spot::class)->create();
+        $user = factory(\App\User::class)->create();
 
-        $response = $this->actingAs($user)->delete( "/spots/$spot->slug");
+        $spot = factory(\App\Spot::class)->create(['creator_id' => $user->id]);
+
+        $response = $this->delete( "/spots/$spot->slug");
 
         if (!$response->assertStatus(200)) {
             \Log::info($response->json());

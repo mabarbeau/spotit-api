@@ -5,22 +5,24 @@ namespace Tests\Feature\Spots;
 use App\Spot;
 use Tests\TestCase;
 use Illuminate\Foundation\Testing\RefreshDatabase;
-use Illuminate\Foundation\Testing\WithoutMiddleware;
 
 class SnapshotTest extends TestCase
 {
     use RefreshDatabase;
-    use WithoutMiddleware;
+
     /**
-     * Can delete a spot
+     * Creating and updating takes snapshots
      * 
+     * @param \App\Spot $spot
      * @return void
      */
     public function testCreateAndUpdateMakeSnapshots()
     {
-        // Creating a spot takes a snapshot
-        $spot =factory(Spot::class)->create();
+        $user = factory(\App\User::class)->create();
 
+        $spot = factory(\App\Spot::class)->create(['creator_id' => $user->id]);
+
+        // Creating a spot takes a snapshot
         $this->assertEquals($spot->snapshots()->where('event', 'created')->count(), 1);
         
         $newData = factory(Spot::class)->make()->toArray();

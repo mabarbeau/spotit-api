@@ -10,14 +10,13 @@ class UpdateTest extends TestCase
     use RefreshDatabase;
     /**
      * A basic feature test example.
-     *
-     * @dataProvider UserProvider
-     *
-     * @param \App\User $User
+     * 
      * @return void
      */
-    public function testCan(\App\User $user)
+    public function testCan()
     {
+        $user = factory(\App\User::class)->create();
+        
         $sport = factory(\App\Sport::class)->create();
 
         $key = (new \App\Sport)->getRouteKeyName();

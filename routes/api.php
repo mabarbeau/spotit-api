@@ -1,4 +1,6 @@
 <?php
+Route::post('auth/login', 'AuthController@login');
+Route::post('auth/refresh', 'AuthController@refresh');
 
 Route::get('users', 'UserController@index');
 Route::get('users/{id}', 'UserController@show');

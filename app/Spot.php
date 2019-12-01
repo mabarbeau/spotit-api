@@ -14,7 +14,7 @@ class Spot extends Model
 
     public static function create(array $attributes = [])
     {
-        $attributes['creator_id'] = Auth::user()->id;
+        $attributes['creator_id'] = User::first()->id; // TODO:  Auth::user()->id
 
         return static::query()->create($attributes);
     }
@@ -35,6 +35,14 @@ class Spot extends Model
     public function snapshots()
     {
         return $this->morphMany('App\Snapshot', 'snapshotable');
+    }
+
+    /**
+     * Snapshots of spot
+     */
+    public function map()
+    {
+        return $this->morphOne('App\Snapshot', 'mappable');
     }
 
     /**

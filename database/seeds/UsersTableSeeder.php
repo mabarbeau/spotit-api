@@ -13,7 +13,11 @@ class UsersTableSeeder extends Seeder
     {
         factory(App\User::class, 50)->create()->each(function ($user) {
             if (rand(1, 10) < 8) {
-                $user->spots()->saveMany(factory(App\Spot::class, rand(1, 5))->make());
+                $user->spots()->saveMany(factory(App\Spot::class, rand(1, 5))->make())->each(
+                    function ($spot) {
+                        $spot->map()->save(factory(App\Map::class)->make());
+                    }
+                );
             }
         });
     }

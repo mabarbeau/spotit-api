@@ -54,6 +54,14 @@ class Spot extends Model
     }
 
     /**
+     * Spots for sport
+     */
+    public function features()
+    {
+        return $this->hasMany('App\Feature');
+    }
+
+    /**
      * Sports available at spot
      */
     public function creator()

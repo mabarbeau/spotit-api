@@ -40,7 +40,8 @@ class SpotController extends Controller
             'creator',
             'map',
             'features',
-            'features.map'
+            'features.map',
+            'sports:name'
         ])->firstOrFail();
     }
 

@@ -48,7 +48,7 @@ class Spot extends Model
     /**
      * Sports available at spot
      */
-    public function sport()
+    public function sports()
     {
         return $this->belongsToMany('App\Sport');
     }

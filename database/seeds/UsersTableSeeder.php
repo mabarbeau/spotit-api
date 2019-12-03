@@ -3,6 +3,7 @@
 use App\Map;
 use App\Spot;
 use App\User;
+use App\Sport;
 use App\Feature;
 use Illuminate\Database\Seeder;
 use Symfony\Component\Console\Helper\ProgressBar;
@@ -48,6 +49,9 @@ class UsersTableSeeder extends Seeder
         if (rand(1, 10) < 8) {
             $spot->features()->saveMany(factory(Feature::class, rand(1, 5))->make())->each([$this, 'eachFeature']);
         }
+        $spot->sports()->attach(array_values(
+            Sport::inRandomOrder()->limit(rand(1, 3))->pluck('id')->toArray()
+        ));
     }
 
     function eachFeature($feature)

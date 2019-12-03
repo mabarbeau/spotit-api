@@ -5,9 +5,14 @@ use App\Spot;
 use App\User;
 use App\Feature;
 use Illuminate\Database\Seeder;
+use Symfony\Component\Console\Helper\ProgressBar;
+use Symfony\Component\Console\Output\ConsoleOutput;
 
 class UsersTableSeeder extends Seeder
 {
+    protected $output;
+    protected $progress;
+
     /**
      * Run the database seeds.
      *
@@ -15,18 +20,26 @@ class UsersTableSeeder extends Seeder
      */
     public function run()
     {
-        factory(User::class, 50)->create()->each([$this, 'eachUser']);
+        $count = 50;
+        $this->output = new ConsoleOutput();
+        $this->progress = new ProgressBar($this->output, $count);
+        
+        factory(User::class, $count)->create()->each([$this, 'eachUser']);
+
+        $this->progress->finish();
+        echo "\n";
     }
-    
+
     function eachUser($user)
     {
         $isPostmanSpotCreated = Spot::where(['slug' => 'postman'])->exists();
         if (!$isPostmanSpotCreated) {
-            factory(Spot::class, 1)->create(['creator_id' => $user->id, 'slug' => 'postman'])->each([$this, 'eachSpot']);
+            factory(Spot::class)->create(['creator_id' => $user->id, 'slug' => 'postman'])->each([$this, 'eachSpot']);
         }
         if (rand(1, 10) < 8) {
             $user->spots()->saveMany(factory(Spot::class, rand(1, 5))->make())->each([$this, 'eachSpot']);
         }
+        $this->progress->advance();
     }
 
     function eachSpot($spot)
@@ -42,3 +55,4 @@ class UsersTableSeeder extends Seeder
         $feature->map()->save(factory(Map::class)->make());
     }
 }
+

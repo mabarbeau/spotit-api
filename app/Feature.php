@@ -6,9 +6,14 @@ use Illuminate\Database\Eloquent\Model;
 
 class Feature extends Model
 {
-    protected $hidden = ['id'];
+    protected $hidden = [
+        'id',
+        'spot_id'
+    ];
+    
     protected $guarded = [
-        'id'
+        'id',
+        'spot_id'
     ];
 
     /**
@@ -24,6 +29,6 @@ class Feature extends Model
      */
     public function map()
     {
-        return $this->morphOne('App\Snapshot', 'mappable');
+        return $this->morphOne('App\Map', 'mappable');
     }
 }

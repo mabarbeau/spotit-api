@@ -36,7 +36,12 @@ class SpotController extends Controller
      */
     protected function show($slug)
     {
-        return Spot::where('slug', $slug)->firstOrFail();
+        return Spot::where('slug', $slug)->with([
+            'creator',
+            'map',
+            'features',
+            'features.map'
+        ])->firstOrFail();
     }
 
     /**
@@ -51,7 +56,7 @@ class SpotController extends Controller
         $spot = Spot::where('slug', $slug)->firstOrFail();
 
         return [
-            'updated' => $spot->update($request->all()) 
+           'updated' => $spot->update($request->all()) 
         ];
     }
     

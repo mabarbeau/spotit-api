@@ -42,7 +42,7 @@ class Spot extends Model
      */
     public function map()
     {
-        return $this->morphOne('App\Snapshot', 'mappable');
+        return $this->morphOne('App\Map', 'mappable');
     }
 
     /**

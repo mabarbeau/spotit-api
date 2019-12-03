@@ -9,8 +9,18 @@ class Map extends Model
 {
     use SpatialTrait;
 
+    protected $hidden = [
+        'id',
+        'mappable_id',
+        'mappable_type',
+    ];
+
     protected $guarded = [
-        'id'
+        'id',
+    ];
+
+    protected $spatialFields = [
+        'geometry',
     ];
 
     public function mappable()

@@ -1,4 +1,6 @@
 <?php
+use Illuminate\Support\Facades\Route;
+
 Route::post('auth/login', 'AuthController@login');
 Route::post('auth/refresh', 'AuthController@refresh');
 
@@ -12,3 +14,5 @@ Route::resource('spots', 'SpotController')->except([
 Route::resource('sports', 'SportController')->except([
     'create', 'edit'
 ]);
+
+Route::get('updates', 'UpdateController@index');

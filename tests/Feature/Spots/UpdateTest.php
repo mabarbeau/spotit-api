@@ -13,7 +13,7 @@ class UpdateTest extends TestCase
      *
      * @return void
      */
-    public function testCan()
+    public function testSpotUpdateCreatesNewRecordInTheUpdatesTable()
     {
         $user = factory(\App\User::class)->create();
 
@@ -21,8 +21,15 @@ class UpdateTest extends TestCase
         
         $response = $this->actingAs($user)->put(
             "/spots/" . $spot->slug,
-            $spot = factory(\App\Spot::class)->make()->toArray()
+            factory(\App\Spot::class)->make()->toArray()
         );
+
+        $this->assertDatabaseHas('updates', [
+            'updatable_id' => $spot->id,
+            'updatable_type' => 'App\Spot',
+            'status' => 'pending'
+            // 'creator_id' => $user->id,
+        ]);
 
         $response->assertStatus(200);
     }

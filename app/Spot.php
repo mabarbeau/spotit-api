@@ -38,6 +38,14 @@ class Spot extends Model
     }
 
     /**
+     * Updates of spot
+     */
+    public function updates()
+    {
+        return $this->morphMany('App\Update', 'updatable');
+    }
+
+    /**
      * Snapshots of spot
      */
     public function map()

@@ -50,15 +50,21 @@ class SpotController extends Controller
      * Update the specified spot in storage.
      *
      * @param  App\Http\Requests\UpdateSpot  $request
-     * @param  string $slug
+     * @param  App\Spot $spot
      * @return \Illuminate\Http\Response
      */
-    public function update(UpdateSpot $request, $slug)
+    public function update(UpdateSpot $request, Spot $spot)
     {
-        $spot = Spot::where('slug', $slug)->firstOrFail();
+        $user = \App\User::first(); // TODO Auth::user();
+
+        $spot->updates()->create([
+            'data' => json_encode($request->getChanges()),
+            'creator_id' => $user->id
+        ]);
 
         return [
-           'updated' => $spot->update($request->all()) 
+           'status' => 'success',
+           'message' => 'Request to update spot created',
         ];
     }
     
@@ -71,9 +77,12 @@ class SpotController extends Controller
     public function destroy($slug)
     {
         $spot = Spot::where('slug', $slug)->firstOrFail();
+        
+        $spot->delete();
 
         return [
-            'deleted' =>  $spot->delete()
+            'status' => 'success',
+            'message' => 'Spot deleted'
         ];
     }
 }

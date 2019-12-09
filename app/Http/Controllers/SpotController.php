@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Spot;
 use App\Http\Requests\StoreSpot;
+use App\Http\Requests\UpdateSpot;
 
 class SpotController extends Controller
 {
@@ -48,11 +49,11 @@ class SpotController extends Controller
     /**
      * Update the specified spot in storage.
      *
-     * @param  App\Http\Requests\StoreSpot  $request
+     * @param  App\Http\Requests\UpdateSpot  $request
      * @param  string $slug
      * @return \Illuminate\Http\Response
      */
-    public function update(StoreSpot $request, $slug)
+    public function update(UpdateSpot $request, $slug)
     {
         $spot = Spot::where('slug', $slug)->firstOrFail();
 

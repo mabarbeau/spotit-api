@@ -7,30 +7,11 @@ use Illuminate\Database\Eloquent\Model;
 
 class Update extends Model
 {
-    /**
-     * Turn off auto incrementing primary key
-     *
-     * @var boolean
-     */
-    public $incrementing = false;
+    use Traits\UsesUuid;
 
     protected $guarded = [
         'id'
     ];
-
-    protected static function boot()
-    {
-        parent::boot();
-
-        static::creating(function ($post) {
-            $post->{$post->getKeyName()} = (string) Str::uuid();
-        });
-    }
-
-    public function getKeyType()
-    {
-        return 'string';
-    }
 
     public function updatable()
     {

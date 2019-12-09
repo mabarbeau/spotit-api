@@ -3,9 +3,7 @@
 namespace App\Exceptions;
 
 use Exception;
-use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
-use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 class Handler extends ExceptionHandler
 {
@@ -14,19 +12,14 @@ class Handler extends ExceptionHandler
      *
      * @var array
      */
-    protected $dontReport = [
-        //
-    ];
+    protected $dontReport = [];
 
     /**
      * A list of the inputs that are never flashed for validation exceptions.
      *
      * @var array
      */
-    protected $dontFlash = [
-        'password',
-        'password_confirmation',
-    ];
+    protected $dontFlash = [];
 
     /**
      * Report or log an exception.
@@ -48,15 +41,32 @@ class Handler extends ExceptionHandler
      */
     public function render($request, Exception $exception)
     {
-        if (
-            $exception instanceof ModelNotFoundException
-            || $exception instanceof NotFoundHttpException
-        ) {
-            return response()->json([
-                'status' => 'error',
-                'message' => 'Page not found'
-            ], 404);
+        $message = self::message($exception);
+
+        return response()->json([
+            'status' => 'error',
+            'message' => $message[1],
+        ], $message[0]);
+    }
+
+    /**
+     * A list error messages
+     *
+     * @var array
+     */
+    protected function message(Exception $exception): array
+    {
+        switch (get_class($exception)) {
+            case 'Illuminate\Auth\Access\AuthorizationException':
+                return [401, 'Not authorized'];
+
+            case 'Symfony\Component\HttpKernel\Exception\NotFoundHttpException':
+            case 'Illuminate\Database\Eloquent\ModelNotFoundException':
+                return [404, 'Page not found'];
+
+            default:
+                return [500, 'Server error'];
+                break;
         }
-        return parent::render($request, $exception);
     }
 }

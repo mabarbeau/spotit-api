@@ -2,7 +2,6 @@
 
 namespace App;
 
-use Illuminate\Support\Str;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 
 class User extends Authenticatable
@@ -15,6 +14,10 @@ class User extends Authenticatable
      */
     protected $fillable = [
         'name', 'email',
+    ];
+    protected $hidden = ['id'];
+    protected $guarded = [
+        'id'
     ];
 
     public function spots()

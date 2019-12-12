@@ -31,7 +31,7 @@ class AuthController extends Controller
 
         $token = self::createToken($user, $request);
 
-        return response($user)->cookie('jwt', $token, 1440);
+        return response($user)->cookie('JSESSIONID', $token, 1440);
     }
 
     /**
@@ -55,12 +55,14 @@ class AuthController extends Controller
      * @param  \Illuminate\Http\Request  $request
      */
     protected static function createToken(User $user, Request $request) {
+        $privateKey = file_get_contents('../storage/id_rsa');
+
         return JWT::encode([
             'id' => $user->id,
             "iss" => URL::to('/'),
             "aud" => $request->header('origin'),
             "iat" => Carbon::now()->timestamp,
-        ], env('JWT_KEY_SECRET'), 'RS256');
+        ], $privateKey, 'RS256');
     }
 
     public function refresh()

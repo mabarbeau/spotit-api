@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class UserController extends Controller
 {
@@ -29,4 +30,20 @@ class UserController extends Controller
         return User::find($id);
     }
 
+    /**
+     * Get the currently authenticated user
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function me()
+    {
+        $user = null;
+        if (Auth::check()) {
+            $user = Auth::user();
+        }
+        return [
+            'status' => $user ? 'success' : 'failure',
+            'user' => $user
+        ];
+    }
 }

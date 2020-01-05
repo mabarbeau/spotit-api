@@ -24,4 +24,9 @@ class User extends Authenticatable
         return $this->hasMany('App\Spot', 'creator_id');
     }
     
+    public function services()
+    {
+        return $this->belongsToMany('App\Service');
+    }
+    
 }

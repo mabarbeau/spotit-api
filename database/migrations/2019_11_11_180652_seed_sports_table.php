@@ -43,6 +43,6 @@ class SeedSportsTable extends Migration
      */
     public function down()
     {
-        DB::table('sports')->all()->delete();
+        DB::table('sports')->delete();
     }
 }

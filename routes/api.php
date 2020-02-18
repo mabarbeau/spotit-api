@@ -1,4 +1,6 @@
 <?php
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Route;
 
 Route::post('auth/login', 'AuthController@login');
@@ -17,3 +19,14 @@ Route::resource('sports', 'SportController')->except([
 ]);
 
 Route::get('updates', 'UpdateController@index');
+
+
+Route::post('log/info', function(Request $request){
+    Log::info($request->all());
+});
+Route::post('log/warning', function(Request $request){
+    Log::warning($request->all());
+});
+Route::post('log/error', function(Request $request){
+    Log::error($request->all());
+});

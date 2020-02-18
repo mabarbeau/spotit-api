@@ -7,6 +7,7 @@ use Carbon\Carbon;
 use \Firebase\JWT\JWT;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\URL;
+use Illuminate\Support\Facades\Config;
 
 class AuthController extends Controller
 {
@@ -26,12 +27,19 @@ class AuthController extends Controller
         if (!$payload) {
             return ['status' => 'error'];
         }
-
-        $user = self::findOrCreateUser($payload['email'], $payload['name']);
+        $user = self::updateOrCreateUser($payload['email'], $payload['name']);
 
         $token = self::createToken($user, $request);
 
-        return response($user)->cookie('JSESSIONID', $token, 1440);
+        return response($user)->cookie(
+            Config::get('session.cookie'),
+            $token,
+            Config::get('session.lifetime'),
+            Config::get('session.path'),
+            Config::get('session.domain'),
+            Config::get('session.secure'),
+            Config::get('session.http_only'),
+        );
     }
 
     /**
@@ -40,9 +48,16 @@ class AuthController extends Controller
      * @param  String  $email
      * @param  String  $name
      */
-    protected static function findOrCreateUser($email, $name) {
+    protected static function updateOrCreateUser($email, $name) {
         $user = User::where(['email' => $email])->first();
-        return $user ?? User::create([
+        if ($user) {
+            $user->update([
+                'email' => $email,
+                'name' => $name,
+            ]);
+            return $user;
+        }
+        return User::create([
             'email' => $email,
             'name' => $name,
         ]);

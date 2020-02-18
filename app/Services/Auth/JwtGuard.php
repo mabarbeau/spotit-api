@@ -6,6 +6,7 @@ use Firebase\JWT\JWT;
 use Illuminate\Http\Request;
 use Illuminate\Auth\GuardHelpers;
 use Illuminate\Contracts\Auth\Guard;
+use Illuminate\Support\Facades\Config;
 use Illuminate\Contracts\Auth\UserProvider;
 
 class JwtGuard implements Guard
@@ -61,7 +62,7 @@ class JwtGuard implements Guard
      */
     public function getTokenForRequest()
     {
-        return $this->request->cookie('JSESSIONID');
+        return $this->request->cookie(Config::get('session.cookie'),);
     }
 
     /**

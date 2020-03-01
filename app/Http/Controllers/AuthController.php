@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\User;
+use App\Account;
 use Carbon\Carbon;
 use \Firebase\JWT\JWT;
 use Illuminate\Http\Request;
@@ -27,7 +28,33 @@ class AuthController extends Controller
         if (!$payload) {
             return ['status' => 'error'];
         }
-        $user = self::updateOrCreateUser($payload['email'], $payload['name']);
+        
+        $account = Account::where([
+            'account_id' => $payload['sub'],
+            'provider' => $request['service'],
+        ])->first();
+
+        $user = $account 
+            ? $account->user
+            : User::where(['email' => $payload['email']])->first();
+
+        $user = self::updateOrCreateUser(
+            $user, 
+            [
+                'name' => $payload['name'],
+                'email' => $payload['email'],
+                'picture' => $payload['picture'],
+            ]
+        );
+
+        if (!$account) {
+            $user->accounts()->create([
+                'provider' => $request['service'],
+                'account_id' => $payload['sub'],
+            ]);
+        }
+
+        $user->load('accounts');
 
         $token = self::createToken($user, $request);
 
@@ -48,19 +75,13 @@ class AuthController extends Controller
      * @param  String  $email
      * @param  String  $name
      */
-    protected static function updateOrCreateUser($email, $name) {
-        $user = User::where(['email' => $email])->first();
+    protected static function updateOrCreateUser($user, $data)
+    {
         if ($user) {
-            $user->update([
-                'email' => $email,
-                'name' => $name,
-            ]);
+            $user->update($data);
             return $user;
         }
-        return User::create([
-            'email' => $email,
-            'name' => $name,
-        ]);
+        return User::create($data);
     }
 
     /**

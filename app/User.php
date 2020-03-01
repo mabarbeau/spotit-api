@@ -13,7 +13,7 @@ class User extends Authenticatable
      * @var array
      */
     protected $fillable = [
-        'name', 'email',
+        'name', 'email', 'picture',
     ];
     protected $guarded = [
         'id'
@@ -24,9 +24,8 @@ class User extends Authenticatable
         return $this->hasMany('App\Spot', 'creator_id');
     }
     
-    public function services()
+    public function accounts()
     {
-        return $this->belongsToMany('App\Service');
+        return $this->hasMany('App\Account')->orderBy('updated_at');
     }
-    
 }

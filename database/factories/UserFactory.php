@@ -20,7 +20,7 @@ $factory->define(User::class, function (Faker $faker) {
     return [
         'id' => $faker->uuid,
         'name' => $faker->name,
-        'user_name' => $faker->unique()->userName,
         'email' => $faker->unique()->safeEmail,
+        'picture' => null,
     ];
 });

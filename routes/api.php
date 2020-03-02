@@ -3,12 +3,12 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Route;
 
+Route::get('me', 'UserController@me');
 Route::post('auth/login', 'AuthController@login');
 Route::post('auth/refresh', 'AuthController@refresh');
 
 Route::get('users', 'UserController@index');
 Route::get('users/{id}', 'UserController@show');
-Route::get('me', 'UserController@me');
 
 Route::resource('spots', 'SpotController')->except([
     'create', 'edit'

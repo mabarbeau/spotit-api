@@ -2,8 +2,9 @@
 
 namespace Tests\Feature\Sports;
 
-use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
+use Illuminate\Support\Facades\Log;
+use Illuminate\Foundation\Testing\RefreshDatabase;
 
 class CreateTest extends TestCase
 {
@@ -22,7 +23,7 @@ class CreateTest extends TestCase
             factory(\App\Sport::class)->make()->toArray()
         );
         if(!$response->assertStatus(201)) {            
-            \Log::info($response->json());
+            Log::info($response->json());
         }
     }
 }

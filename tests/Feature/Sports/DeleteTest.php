@@ -2,8 +2,9 @@
 
 namespace Tests\Feature\Sports;
 
-use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
+use Illuminate\Support\Facades\Log;
+use Illuminate\Foundation\Testing\RefreshDatabase;
 
 class DeleteTest extends TestCase
 {
@@ -22,7 +23,7 @@ class DeleteTest extends TestCase
         $response = $this->actingAs($user)->delete( "/sports/$sport->name");
 
         if (!$response->assertStatus(200)) {
-            \Log::info($response->json());
+            Log::info($response->json());
         }
     }
 }

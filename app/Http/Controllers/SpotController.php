@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Spot;
 use App\Http\Requests\StoreSpot;
 use App\Http\Requests\UpdateSpot;
+use Illuminate\Support\Facades\Auth;
 
 class SpotController extends Controller
 {
@@ -55,7 +56,7 @@ class SpotController extends Controller
      */
     public function update(UpdateSpot $request, Spot $spot)
     {
-        $user = \App\User::first(); // TODO Auth::user();
+        $user = Auth::user();
 
         $spot->updates()->create([
             'data' => json_encode($request->getChanges()),

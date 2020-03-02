@@ -24,6 +24,11 @@ class User extends Authenticatable
         return $this->hasMany('App\Spot', 'creator_id');
     }
     
+    public function notifications()
+    {
+        return $this->hasMany('App\Notification');
+    }
+    
     public function accounts()
     {
         return $this->hasMany('App\Account')->orderBy('updated_at');

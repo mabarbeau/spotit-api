@@ -27,8 +27,8 @@ class UpdateTest extends TestCase
         $this->assertDatabaseHas('updates', [
             'updatable_id' => $spot->id,
             'updatable_type' => 'App\Spot',
-            'status' => 'pending'
-            // 'creator_id' => $user->id,
+            'status' => 'pending',
+            'creator_id' => $user->id,
         ]);
 
         $response->assertStatus(200);

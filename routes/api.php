@@ -18,8 +18,11 @@ Route::resource('sports', 'SportController')->except([
     'create', 'edit'
 ]);
 
-Route::get('updates', 'UpdateController@index');
+Route::get('notifications', 'NotificationController@index');
+Route::post('notifications', 'NotificationController@store');
+Route::delete('notifications/{id}', 'NotificationController@destroy');
 
+Route::get('updates', 'UpdateController@index');
 
 Route::post('log/info', function(Request $request){
     Log::info($request->all());

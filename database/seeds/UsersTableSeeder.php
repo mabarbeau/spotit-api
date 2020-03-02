@@ -6,6 +6,7 @@ use App\User;
 use App\Sport;
 use App\Update;
 use App\Feature;
+use App\Notification;
 use Illuminate\Support\Str;
 use Illuminate\Database\Seeder;
 use Symfony\Component\Console\Helper\ProgressBar;
@@ -41,6 +42,9 @@ class UsersTableSeeder extends Seeder
         }
         if (rand(1, 10) < 8) {
             $user->spots()->saveMany(factory(Spot::class, rand(1, 5))->make())->each([$this, 'eachSpot']);
+        }
+        if (rand(1, 10) < 8) {
+            $user->notifications()->saveMany(factory(Notification::class, rand(1, 5))->make());
         }
         $user->accounts()->create([
             'account_id' => Str::uuid(),

@@ -15,7 +15,7 @@ class NotificationController extends Controller
      */
     public function index()
     {
-        return Auth::user()->notifications()->get();
+        return Auth::user()->notifications()->paginate();
     }
 
     /**

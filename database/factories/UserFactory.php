@@ -21,6 +21,6 @@ $factory->define(User::class, function (Faker $faker) {
         'id' => $faker->uuid,
         'name' => $faker->name,
         'email' => $faker->unique()->safeEmail,
-        'picture' => null,
+        'picture' => 'https://lh3.googleusercontent.com/proxy/-4eKhQ2725r5AMmHRvtnSWsE6hjNLC9h7e9ee04FTrztzsnr9ooA78eEQevpwGQYlgnKm4JfCTJX8zuveFR_JPGxG2UGrDxvHs1Dt1x89TuMuuI',
     ];
 });

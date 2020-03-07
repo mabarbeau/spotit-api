@@ -18,8 +18,8 @@ class CreateNotificationsTable extends Migration
             $table->uuid('user_id');
             $table->foreign('user_id')->references('id')->on('users');
             $table->string('message');
-            $table->string('type');
-            $table->boolean('read')->default(false);
+            $table->string('url', 100)->nullable();
+            $table->boolean('read')->default(0);
             $table->timestamps();
         });
     }

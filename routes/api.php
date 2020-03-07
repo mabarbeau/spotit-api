@@ -20,7 +20,10 @@ Route::resource('sports', 'SportController')->except([
 
 Route::get('notifications', 'NotificationController@index');
 Route::post('notifications', 'NotificationController@store');
-Route::delete('notifications/{id}', 'NotificationController@destroy');
+Route::get('notifications/count', 'NotificationController@count');
+Route::put('notifications/{notification}/read', 'NotificationController@read');
+Route::put('notifications/{notification}/unread', 'NotificationController@unread');
+Route::delete('notifications/{notification}', 'NotificationController@destroy');
 
 Route::get('updates', 'UpdateController@index');
 

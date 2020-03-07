@@ -19,4 +19,27 @@ class Notification extends Model
     {
         return $this->hasOne('App\User');
     }
+
+    /**
+     * Get the user's first name.
+     *
+     * @param  int  $value
+     * @return boolean
+     */
+    public function getReadAttribute($value)
+    {
+        return $value ? true : false;
+    }
+
+
+    /**
+     * Scope a query to only include active users.
+     *
+     * @param  \Illuminate\Database\Eloquent\Builder  $query
+     * @return \Illuminate\Database\Eloquent\Builder
+     */
+    public function scopeUnread($query)
+    {
+        return $query->where('read', false);
+    }
 }

@@ -26,7 +26,7 @@ class StoreNotification extends FormRequest
     {
         return [
             'message' => 'required|max:255',
-            'type' => 'required',
+            'url' => 'max:100'
         ];
     }
 }

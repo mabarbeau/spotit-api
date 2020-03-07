@@ -8,6 +8,31 @@ use App\Http\Requests\StoreNotification;
 
 class NotificationController extends Controller
 {
+
+    /**
+     * Instantiate a new controller instance.
+     *
+     * @return void
+     */
+    public function __construct()
+    {
+        // $this->middleware('auth');
+        // $this->user = Auth::user();
+        $this->user = \App\User::inRandomOrder()->first();
+    }
+
+    /**
+     * Returns total number of unread notifications
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function count()
+    {
+        return [
+            'total' => $this->user->notifications()->unread()->count(),
+        ];
+    }
+
     /**
      * Display a listing of the resource.
      *
@@ -15,7 +40,7 @@ class NotificationController extends Controller
      */
     public function index()
     {
-        return Auth::user()->notifications()->paginate();
+        return $this->user->notifications()->paginate();
     }
 
     /**
@@ -26,7 +51,35 @@ class NotificationController extends Controller
      */
     public function store(StoreNotification $request)
     {
-        return Auth::user()->notifications()->create($request->all());
+        return $this->user->notifications()->create($request->all());
+    }
+
+    /**
+     * Mark the notification as read
+     *
+     * @param  \App\Notification  $notification
+     * @return \Illuminate\Http\Response
+     */
+    public function read(Notification $notification)
+    {   
+        return [
+            'success' => $notification->update(['read' => 1]),
+            'data' => $notification,
+        ];
+    }
+
+    /**
+     * Mark the notification as unread
+     *
+     * @param  \App\Notification  $notification
+     * @return \Illuminate\Http\Response
+     */
+    public function unread(Notification $notification)
+    {
+        return [
+            'success' => $notification->update(['read' => 0]),
+            'data' => $notification,
+        ];
     }
 
     /**
@@ -37,7 +90,6 @@ class NotificationController extends Controller
      */
     public function destroy(Notification $notification)
     {
-        
         return [
             'success' => $notification->delete(),
             'data' => $notification,

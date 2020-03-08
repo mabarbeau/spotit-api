@@ -41,7 +41,7 @@ class UserController extends Controller
             $user = Auth::user();
         }
         return [
-            'status' => $user ? 'success' : 'failure',
+            'status' => 'success',
             'user' => $user
         ];
     }

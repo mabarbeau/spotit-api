@@ -11,12 +11,11 @@ class UserController extends Controller
     /**
      * Display a listing of the resource.
      *
-     * @param  Illuminate\Http\Request  $request
      * @return Illuminate\Pagination\LengthAwarePaginator
      */
-    public function index(Request $request)
+    public function index()
     {
-        return User::select('id', 'name')->paginate();
+        return User::select('id', 'name', 'picture')->paginate();
     }
 
     /**

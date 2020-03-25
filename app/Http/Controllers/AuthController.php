@@ -4,10 +4,9 @@ namespace App\Http\Controllers;
 
 use App\User;
 use App\Account;
-use Carbon\Carbon;
-use \Firebase\JWT\JWT;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\URL;
+use Illuminate\Http\Response;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Config;
 
 class AuthController extends Controller
@@ -38,6 +37,8 @@ class AuthController extends Controller
             ? $account->user
             : User::where(['email' => $payload['email']])->first();
 
+        $code = $user ? 200 : 201;
+
         $user = self::updateOrCreateUser(
             $user, 
             [
@@ -56,17 +57,9 @@ class AuthController extends Controller
 
         $user->load('accounts');
 
-        $token = self::createToken($user, $request);
+        $this->guard()->login($user);
 
-        return response($user)->cookie(
-            Config::get('session.cookie'),
-            $token,
-            Config::get('session.lifetime'),
-            Config::get('session.path'),
-            Config::get('session.domain'),
-            Config::get('session.secure'),
-            Config::get('session.http_only'),
-        );
+        return new Response($user, $code);
     }
 
     /**
@@ -84,23 +77,6 @@ class AuthController extends Controller
         return User::create($data);
     }
 
-    /**
-     * Find or create user
-     *
-     * @param  \App\User  $user
-     * @param  \Illuminate\Http\Request  $request
-     */
-    protected static function createToken(User $user, Request $request) {
-        $privateKey = file_get_contents('../storage/id_rsa');
-
-        return JWT::encode([
-            'id' => $user->id,
-            "iss" => URL::to('/'),
-            "aud" => $request->header('origin'),
-            "iat" => Carbon::now()->timestamp,
-        ], $privateKey, 'RS256');
-    }
-
     public function refresh()
     {
         // Get refresh token
@@ -113,6 +89,16 @@ class AuthController extends Controller
     {
         // Delete cookie
         // Invalidate token
+    }
+
+    /**
+     * Get the guard to be used during registration.
+     *
+     * @return \Illuminate\Contracts\Auth\StatefulGuard
+     */
+    protected function guard()
+    {
+        return Auth::guard();
     }
 
 }

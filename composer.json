@@ -10,7 +10,6 @@
     "require": {
         "php": "^7.2.5",
         "fideloper/proxy": "^4.2",
-        "firebase/php-jwt": "^5.1",
         "fruitcake/laravel-cors": "^1.0",
         "google/apiclient": "^2.4",
         "grimzy/laravel-mysql-spatial": "^2.2",

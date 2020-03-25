@@ -22,7 +22,7 @@ class AuthController extends Controller
      */
     public function login(Request $request)
     {
-        $client = new \Google_Client(['client_id' => env('GOOGLE_CLIENT_ID')]);
+        $client = new \Google_Client(['client_id' => Config::get('services.client_id')]);
         $payload = $client->verifyIdToken(request('token'));
         
         if (!$payload) {

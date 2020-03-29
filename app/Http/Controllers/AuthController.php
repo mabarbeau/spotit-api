@@ -4,16 +4,40 @@ namespace App\Http\Controllers;
 
 use App\User;
 use App\Account;
-use Carbon\Carbon;
-use \Firebase\JWT\JWT;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\URL;
+use Illuminate\Http\Response;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Config;
+use Illuminate\Support\Facades\Validator;
 
 class AuthController extends Controller
 {
     protected $request;
     protected $user;
+
+    /**
+     * Get the guard to be used during registration.
+     *
+     * @return \Illuminate\Contracts\Auth\StatefulGuard
+     */
+    protected function guard()
+    {
+        return Auth::guard();
+    }
+
+    /**
+     * Get a validator for an incoming registration request.
+     *
+     * @param  array  $data
+     * @return \Illuminate\Contracts\Validation\Validator
+     */
+    protected function validator(array $data)
+    {
+        return Validator::make($data, [
+            'service' => ['required', 'string'],
+            'token' => ['required', 'string'],
+        ]);
+    }
 
     /**
      * Login
@@ -22,7 +46,9 @@ class AuthController extends Controller
      */
     public function login(Request $request)
     {
-        $client = new \Google_Client(['client_id' => env('GOOGLE_CLIENT_ID')]);
+        $this->validator($request->all())->validate();
+
+        $client = new \Google_Client(['client_id' => Config::get('services.client_id')]);
         $payload = $client->verifyIdToken(request('token'));
         
         if (!$payload) {
@@ -37,6 +63,8 @@ class AuthController extends Controller
         $user = $account 
             ? $account->user
             : User::where(['email' => $payload['email']])->first();
+
+        $code = $user ? 200 : 201;
 
         $user = self::updateOrCreateUser(
             $user, 
@@ -54,19 +82,9 @@ class AuthController extends Controller
             ]);
         }
 
-        $user->load('accounts');
+        $this->guard()->login($user);
 
-        $token = self::createToken($user, $request);
-
-        return response($user)->cookie(
-            Config::get('session.cookie'),
-            $token,
-            Config::get('session.lifetime'),
-            Config::get('session.path'),
-            Config::get('session.domain'),
-            Config::get('session.secure'),
-            Config::get('session.http_only'),
-        );
+        return new Response($user, $code);
     }
 
     /**
@@ -84,35 +102,9 @@ class AuthController extends Controller
         return User::create($data);
     }
 
-    /**
-     * Find or create user
-     *
-     * @param  \App\User  $user
-     * @param  \Illuminate\Http\Request  $request
-     */
-    protected static function createToken(User $user, Request $request) {
-        $privateKey = file_get_contents('../storage/id_rsa');
-
-        return JWT::encode([
-            'id' => $user->id,
-            "iss" => URL::to('/'),
-            "aud" => $request->header('origin'),
-            "iat" => Carbon::now()->timestamp,
-        ], $privateKey, 'RS256');
-    }
-
-    public function refresh()
-    {
-        // Get refresh token
-        // Validate refresh token
-        // Get user
-        // Respond with token
-    }
-
     public function logout()
     {
-        // Delete cookie
-        // Invalidate token
+        Auth::logout();
     }
 
 }

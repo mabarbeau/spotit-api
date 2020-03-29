@@ -1,11 +1,13 @@
 {
     "cSpell.words": [
         "Authenticatable",
+        "Csrf",
         "Dispatchable",
         "Laravel",
         "Longboard",
         "Longboarding",
         "Paginator",
+        "Stateful",
         "Wakeboard",
         "snapshotable"
     ]

@@ -16,9 +16,8 @@ class NotificationController extends Controller
      */
     public function __construct()
     {
-        // $this->middleware('auth');
-        // $this->user = Auth::user();
-        $this->user = \App\User::inRandomOrder()->first();
+        $this->middleware('auth');
+        $this->user = Auth::user();
     }
 
     /**

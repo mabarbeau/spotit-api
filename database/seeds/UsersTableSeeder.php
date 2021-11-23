@@ -24,7 +24,7 @@ class UsersTableSeeder extends Seeder
      */
     public function run()
     {
-        $count = 50;
+        $count = 1;
         $this->output = new ConsoleOutput();
         $this->progress = new ProgressBar($this->output, $count);
         
@@ -43,9 +43,8 @@ class UsersTableSeeder extends Seeder
         if (rand(1, 10) < 8) {
             $user->spots()->saveMany(factory(Spot::class, rand(1, 5))->make())->each([$this, 'eachSpot']);
         }
-        if (rand(1, 10) < 8) {
-            $user->notifications()->saveMany(factory(Notification::class, rand(1, 5))->make());
-        }
+        $user->notifications()->saveMany(factory(Notification::class, 1)->make());
+
         $user->accounts()->create([
             'account_id' => Str::uuid(),
             'provider' => 'google',
